@@ -1,7 +1,5 @@
 # Days Lost Predictor API
 
-## Description
-
 The Days Lost Predictor API is a Flask-based web service created to predict the number of lost working days due to work-related injuries. It provides an endpoint where users can submit detailed information about an injury, such as the worker's age, occupation, area of work, affected body zone, and type of injury. Using a pre-trained machine learning model, the API will predict the how much days the worker is expected to be absent from work due to the injury.
 
 ## Mapping
