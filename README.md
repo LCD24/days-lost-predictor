@@ -7,6 +7,33 @@ The API includes functionality to add new function mappings to the system. Funct
 
 This feature is essential to train the model correctly, as it ensures that the prediction model has the latest information about the inputs possibilities.
 
+## Database Setup
+
+To set up the database for the Days Lost Predictor API, follow these steps:
+
+1. Create a new database: Create a MySQL database:
+
+    ```
+    CREATE DATABASE days_off_database;
+    ```
+
+2. Select the database:
+
+    ```
+    USE days_off_database;
+    ```
+
+2. Create tables: 
+
+    ```
+    # File included in project repository
+    source database_schema.sql;
+    ```
+
+3. Configure database connection  
+
+    Update the database connection settings in the `src/config.py` file to match your database configuration, including the database host, username, password, and database name.
+
 ## Installation
 
 1. Clone the repository to your local machine:
@@ -48,10 +75,16 @@ This feature is essential to train the model correctly, as it ensures that the p
     pip install -r requirements.txt
     ```
 
-6. Run the app:
+6. Populate database mappings:
 
     ```
     cd src
+    py populate_mapping.py
+    ```
+
+6. Run the app:
+
+    ```
     py app.py
     ```
 
