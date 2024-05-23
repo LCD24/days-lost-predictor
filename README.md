@@ -98,3 +98,4 @@ In the other hand, you can make POST requests to the following endpoints:
 
 - `/predict-lost-days/`: Endpoint for predicting the number of lost working days due to an injury. Requires a JSON payload containing injury information.
 - `/add-function/`: Endpoint for adding new function mappings to the system. Requires a JSON payload containing the new function name.
+- `/train/`: Endpoint for (re)train the prediction model using the latest data available in database. This does not require any payload.
