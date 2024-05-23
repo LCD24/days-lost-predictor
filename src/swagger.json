@@ -8,17 +8,15 @@
   "basePath": "/",
   "tags": [
     {
-      "name": "Prediction",
-      "description": "Requests related to predicting lost days"
+      "name": "Model",
+      "description": "Requests related to predictor"
     },
     {
       "name": "Mapping",
       "description": "Requests related to mapping model parameters"
     }
   ],
-  "schemes": [
-    "http"
-  ],
+  "schemes": ["http"],
   "securityDefinitions": {
     "basicAuth": {
       "type": "basic",
@@ -28,18 +26,12 @@
   "paths": {
     "/predict-lost-days/": {
       "post": {
-        "tags": [
-          "Prediction"
-        ],
+        "tags": ["Model"],
         "summary": "Predict lost working days due to an accident",
         "description": "Predict lost working days based on \"idade\", \"funcao\", \"area_trabalho\", \"zona_corpo_atingida\" and \"tipo_lesao\"",
         "operationId": "predictLostDays",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -70,7 +62,13 @@
                   "example": 1062
                 }
               },
-              "required": ["idade", "funcao", "area_trabalho", "zona_corpo_atingida", "tipo_lesao"]
+              "required": [
+                "idade",
+                "funcao",
+                "area_trabalho",
+                "zona_corpo_atingida",
+                "tipo_lesao"
+              ]
             }
           }
         ],
@@ -97,7 +95,7 @@
                   "example": "You should include 'idade', 'funcao', 'area_trabalho', 'zona_corpo_atingida' and 'tipo_lesao' in your body"
                 }
               }
-            }  
+            }
           },
           "401": {
             "description": "Authentication error",
@@ -109,7 +107,7 @@
                   "example": "Authentication required"
                 }
               }
-            } 
+            }
           },
           "500": {
             "description": "Internal server error",
@@ -121,7 +119,7 @@
                   "example": "An unknown error occured"
                 }
               }
-            }          
+            }
           }
         },
         "security": [
@@ -133,18 +131,12 @@
     },
     "/add-function/": {
       "post": {
-        "tags": [
-          "Mapping"
-        ],
+        "tags": ["Mapping"],
         "summary": "Add function mapping",
         "description": "Add a new function mapping to database",
         "operationId": "addFunction",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
         "parameters": [
           {
             "in": "body",
@@ -177,7 +169,7 @@
                   "example": "You must pass an 'function' parameter in request"
                 }
               }
-            }  
+            }
           },
           "401": {
             "description": "Authentication error",
@@ -189,7 +181,7 @@
                   "example": "Authentication required"
                 }
               }
-            } 
+            }
           },
           "500": {
             "description": "Internal server error",
@@ -201,7 +193,65 @@
                   "example": "An error occured while adding the function"
                 }
               }
-            }  
+            }
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/train/": {
+      "post": {
+        "tags": ["Model"],
+        "summary": "Train model",
+        "description": "Train the model with the latest data present in database",
+        "operationId": "trainModel",
+        "consumes": ["application/json"],
+        "produces": ["application/json"],
+        "responses": {
+          "200": {
+            "description": "Model trained successfully",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "object",
+                  "example": {
+                    "MAE": 1.4394145880574452,
+                    "MSE": 4.87932775037283,
+                    "R2": 0.8805032066394911,
+                    "RMSE": 2.2089200416431622
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Authentication required"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "An unknown error occured"
+                }
+              }
+            }
           }
         },
         "security": [

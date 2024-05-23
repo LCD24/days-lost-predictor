@@ -1,10 +1,11 @@
 from flask import Flask, request, jsonify, send_from_directory
+import pymysql 
+from flask_swagger_ui import get_swaggerui_blueprint
 from predict_lost_days import predict_lost_days as predict
 from populate_mapping import add_function_mapping
-import pymysql 
 from auth.password_hasher import BcryptPasswordHasher
 from auth.authenticator import Authenticator
-from flask_swagger_ui import get_swaggerui_blueprint
+from train_predictor import train_model
 
 SWAGGER_URL = '/api/docs'  # URL for exposing Swagger UI (without trailing '/')
 API_URL = '/swagger.json'  # Our API url (can of course be a local resource)
@@ -28,6 +29,16 @@ authenticator = Authenticator(password_hasher)
 @app.route('/swagger.json')
 def swagger_json():
     return send_from_directory('.', 'swagger.json')
+
+@app.route('/train/', methods=['POST'])
+@authenticator.requires_auth
+def retrain_model():
+    try:
+        model = train_model()
+        print(model)
+        return jsonify({'MSE': model['MSE'],'RMSE': model['RMSE'],'MAE': model['MAE'],'R2': model['R²']}), 200
+    except Exception as e:
+        return jsonify({'message': f"An unknown error occured: {e}"}), 500
 
 @app.route('/predict-lost-days/', methods=['POST'])
 @authenticator.requires_auth

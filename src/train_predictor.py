@@ -120,7 +120,7 @@ def print_model_evaluation(name, metrics):
     """
     
     print(f"Model: {name}")
-    print(f"Performance Metrics:")
+    print("Performance Metrics:")
     print(f"\tMSE: {metrics['MSE']}")
     print(f"\tRMSE: {metrics['RMSE']}")
     print(f"\tMAE: {metrics['MAE']}")
@@ -157,12 +157,8 @@ def train_model():
     """
     Loads, preprocesses data, selects features, trains a model, and saves the best model.
     """
-    data = None
-    try:
-        data =  pd.read_csv(DATASET_FILENAME)
-    except: 
-        generate_dataset()
-        data =  pd.read_csv(DATASET_FILENAME)
+    generate_dataset()
+    data =  pd.read_csv(DATASET_FILENAME)
 
     data = clean_data(data)
     data = map_data(data)
@@ -195,6 +191,7 @@ def train_model():
     print_model_evaluation(best_model_result['name'], best_model_result)
 
     save_model(best_model_result['model'])
+    return best_model_result
     
     
 if __name__ == "__main__":
