@@ -9,8 +9,6 @@ This feature is essential to train the model correctly, as it ensures that the p
 
 ## Database Setup
 
-To set up the database for the Days Lost Predictor API, follow these steps:
-
 1. Create a new database: Create a MySQL database:
 
     ```
@@ -92,7 +90,9 @@ To set up the database for the Days Lost Predictor API, follow these steps:
 
 To interact with the Days Lost Predictor API, users can utilize the provided Swagger UI interface for easy visualization and interaction with the API documentation. Simply navigate to the following URL in your browser:
 
+```
 http://localhost:5000/api/docs
+```
 
 In the other hand, you can make POST requests to the following endpoints:
 
