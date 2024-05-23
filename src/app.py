@@ -28,11 +28,17 @@ authenticator = Authenticator(password_hasher)
 
 @app.route('/swagger.json')
 def swagger_json():
+    """
+    Serve the Swagger JSON file.
+    """
     return send_from_directory('.', 'swagger.json')
 
 @app.route('/train/', methods=['POST'])
 @authenticator.requires_auth
 def retrain_model():
+    """
+    Retrain the prediction model using the latest data available.
+    """
     try:
         model = train_model()
         print(model)
@@ -43,6 +49,9 @@ def retrain_model():
 @app.route('/predict-lost-days/', methods=['POST'])
 @authenticator.requires_auth
 def predict_lost_days():
+    """
+    Predict the number of lost working days due to an injury.
+    """
     data = request.json
     
     # Extract data
@@ -69,6 +78,9 @@ def predict_lost_days():
 @app.route(rule='/add-function/', methods=['POST'])
 @authenticator.requires_auth
 def add_function():
+    """
+    Add a new function to be mapped .
+    """
     data = request.json
     
     # Extract data
