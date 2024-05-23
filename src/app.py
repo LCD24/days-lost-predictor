@@ -1,0 +1,80 @@
+from flask import Flask, request, jsonify, send_from_directory
+from predict_lost_days import predict_lost_days as predict
+from populate_mapping import add_function_mapping
+import pymysql 
+from auth.password_hasher import BcryptPasswordHasher
+from auth.authenticator import Authenticator
+from flask_swagger_ui import get_swaggerui_blueprint
+
+SWAGGER_URL = '/api/docs'  # URL for exposing Swagger UI (without trailing '/')
+API_URL = '/swagger.json'  # Our API url (can of course be a local resource)
+
+# Create a Flask instance 
+app = Flask(__name__)
+
+swaggerui_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={
+        'app_name': "Days Lost Predictor API"
+    }
+)
+
+app.register_blueprint(swaggerui_blueprint, url_prefix=SWAGGER_URL)
+
+password_hasher = BcryptPasswordHasher()
+authenticator = Authenticator(password_hasher)
+
+@app.route('/swagger.json')
+def swagger_json():
+    return send_from_directory('.', 'swagger.json')
+
+@app.route('/predict-lost-days/', methods=['POST'])
+@authenticator.requires_auth
+def predict_lost_days():
+    data = request.json
+    
+    # Extract data
+    idade = data.get('idade')
+    funcao = data.get('funcao')
+    area_trabalho = data.get('area_trabalho')
+    zona_corpo_atingida = data.get('zona_corpo_atingida')
+    tipo_lesao = data.get('tipo_lesao')
+    
+    # Check if all data was sent
+    if (not idade or not funcao or not area_trabalho or not zona_corpo_atingida or not tipo_lesao):
+        return jsonify({'message': "You should include 'idade', 'funcao', 'area_trabalho', 'zona_corpo_atingida' and 'tipo_lesao' in your body"}), 400
+    
+    try:
+        result = predict(idade,funcao,area_trabalho,zona_corpo_atingida,tipo_lesao)
+    except FileNotFoundError:
+        return jsonify({'message': "An error occured while loading the model"}), 500
+    except Exception as e:
+        return jsonify({'message': f"An unknown error occured: {e}"}), 500
+
+    
+    return jsonify({'days_lost': result}), 200
+
+@app.route(rule='/add-function/', methods=['POST'])
+@authenticator.requires_auth
+def add_function():
+    data = request.json
+    
+    # Extract data
+    funcao = data.get('funcao')
+    
+    if funcao is None:
+        return jsonify({'error':  "You must pass an 'function' parameter in request"}), 400
+        
+    # Add mapping
+    try:
+        add_function_mapping(funcao)
+    except pymysql.Error:
+        return jsonify({'error':  "An error occured while adding the function"}), 500
+    
+    return '', 204
+    
+    
+# Execute Flask app
+if __name__ == '__main__':
+    app.run(debug=True)

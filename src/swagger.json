@@ -1,0 +1,215 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Lost Days Predictor API",
+    "version": "1.0.0"
+  },
+  "host": "localhost:5000",
+  "basePath": "/",
+  "tags": [
+    {
+      "name": "Prediction",
+      "description": "Requests related to predicting lost days"
+    },
+    {
+      "name": "Mapping",
+      "description": "Requests related to mapping model parameters"
+    }
+  ],
+  "schemes": [
+    "http"
+  ],
+  "securityDefinitions": {
+    "basicAuth": {
+      "type": "basic",
+      "description": "HTTP Basic Authentication. Works with username and password."
+    }
+  },
+  "paths": {
+    "/predict-lost-days/": {
+      "post": {
+        "tags": [
+          "Prediction"
+        ],
+        "summary": "Predict lost working days due to an accident",
+        "description": "Predict lost working days based on \"idade\", \"funcao\", \"area_trabalho\", \"zona_corpo_atingida\" and \"tipo_lesao\"",
+        "operationId": "predictLostDays",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Parameters required for the prediction",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "idade": {
+                  "type": "integer",
+                  "example": 30
+                },
+                "funcao": {
+                  "type": "string",
+                  "example": "IT"
+                },
+                "area_trabalho": {
+                  "type": "integer",
+                  "example": 32
+                },
+                "zona_corpo_atingida": {
+                  "type": "integer",
+                  "example": 1068
+                },
+                "tipo_lesao": {
+                  "type": "integer",
+                  "example": 1062
+                }
+              },
+              "required": ["idade", "funcao", "area_trabalho", "zona_corpo_atingida", "tipo_lesao"]
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Predicted number of lost working days",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "days_lost": {
+                  "type": "integer",
+                  "example": 10
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "You should include 'idade', 'funcao', 'area_trabalho', 'zona_corpo_atingida' and 'tipo_lesao' in your body"
+                }
+              }
+            }  
+          },
+          "401": {
+            "description": "Authentication error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Authentication required"
+                }
+              }
+            } 
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "An unknown error occured"
+                }
+              }
+            }          
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    },
+    "/add-function/": {
+      "post": {
+        "tags": [
+          "Mapping"
+        ],
+        "summary": "Add function mapping",
+        "description": "Add a new function mapping to database",
+        "operationId": "addFunction",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Parameters required to add a function",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "funcao": {
+                  "type": "string",
+                  "example": "Developer"
+                }
+              },
+              "required": ["funcao"]
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Function added successfully"
+          },
+          "400": {
+            "description": "Invalid request",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "You must pass an 'function' parameter in request"
+                }
+              }
+            }  
+          },
+          "401": {
+            "description": "Authentication error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "Authentication required"
+                }
+              }
+            } 
+          },
+          "500": {
+            "description": "Internal server error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": {
+                  "type": "string",
+                  "example": "An error occured while adding the function"
+                }
+              }
+            }  
+          }
+        },
+        "security": [
+          {
+            "basicAuth": []
+          }
+        ]
+      }
+    }
+  }
+}
