@@ -1,4 +1,4 @@
-from connection_factory import get_connection
+from connection_factory import get_connection, get_oracle_connection
 import pymysql
 
 def map_function(function):
@@ -20,23 +20,23 @@ def map_function(function):
     """
     try:
         # Establish a database connection
-        connection = get_connection()
+        connection = get_oracle_connection()
 
         # Fetch mapping data from MySQL for the provided function name
-        query = "SELECT id_funcao FROM funcao WHERE funcao = %s"
+        query = "SELECT id_funcao FROM funcao WHERE funcao = :1"
         with connection.cursor() as cursor:
             cursor.execute(query, (function,))
             result = cursor.fetchone()
 
-            # Close the database connection
-            connection.close()
-
             # If no matching row is found, raise an exception
             if not result:
                 raise Exception(f"The function '{function}' is not mapped in the database.")
+            
+        # Close the database connection
+        connection.close()
 
-            # Return the identifier corresponding to the provided function name
-            return result['id_funcao']
+        # Return the identifier corresponding to the provided function name
+        return result[0]
     except pymysql.Error as e:
         # Handle pymysql errors
         raise pymysql.Error(f"Error occurred during database operation: {e}")

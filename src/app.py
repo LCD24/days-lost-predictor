@@ -6,6 +6,7 @@ from populate_mapping import add_function_mapping
 from auth.password_hasher import BcryptPasswordHasher
 from auth.authenticator import Authenticator
 from train_predictor import train_model
+from db_manager import DB_Manager
 
 SWAGGER_URL = '/api/docs'  # URL for exposing Swagger UI (without trailing '/')
 API_URL = '/swagger.json'  # Our API url (can of course be a local resource)
@@ -72,6 +73,16 @@ def predict_lost_days():
     except Exception as e:
         return jsonify({'message': f"An unknown error occured: {e}"}), 500
 
+    #Log data in DB
+    db_manager = DB_Manager()
+    acidente_data = {
+            'funcionario': 1,
+            'area_trabalho': data.get('area_trabalho'),
+            'zona_corpo_atingida': data.get('zona_corpo_atingida'),
+            'tipo_lesao': data.get('tipo_lesao'),
+            'result': result
+        }
+    db_manager.enter_accidente_data(acidente_data)
     
     return jsonify({'days_lost': result}), 200
 

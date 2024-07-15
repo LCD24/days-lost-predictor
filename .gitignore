@@ -1,3 +1,9 @@
 
 days_off_venv/
 *.pyc
+
+#venv
+venv
+
+#vscode
+.vscode

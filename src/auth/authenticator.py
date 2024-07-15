@@ -1,11 +1,11 @@
 from functools import wraps
 from flask import request, jsonify
-from connection_factory import get_connection
+from connection_factory import get_connection, get_oracle_connection
 
 def find_by_username(username):
-    connection = get_connection()
+    connection = get_oracle_connection()
     with connection.cursor() as cursor:
-        query = "SELECT * FROM users WHERE username=%s"
+        query = "SELECT * FROM users WHERE username=:1"
         cursor.execute(query, (username,))
         return cursor.fetchone()
 
@@ -15,7 +15,7 @@ class Authenticator:
 
     def check_auth(self, username, password):
         user = find_by_username(username)
-        return user and self.password_hasher.check_password(user['password'], password)
+        return user and self.password_hasher.check_password(user[2], password)
 
     def authenticate(self, message):
         return jsonify({"message": message}), 401, {'WWW-Authenticate': 'Basic realm="Login Required"'}
