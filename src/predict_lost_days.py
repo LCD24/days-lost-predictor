@@ -1,9 +1,8 @@
 import pickle
 from config import MODEL_FILENAME
-from mapper import map_function
 import pandas as pd
 
-def predict_lost_days(idade,funcao,area_trabalho,zona_corpo_atingida,tipo_lesao):
+def predict_lost_days(idade,area_trabalho,zona_corpo_atingida,tipo_lesao):
     """
     Predict the number of lost days based on input features using a pre-trained model.
 
@@ -16,7 +15,6 @@ def predict_lost_days(idade,funcao,area_trabalho,zona_corpo_atingida,tipo_lesao)
 
     Args:
         idade (int): The age of the individual.
-        funcao (str): The function or job role of the individual.
         area_trabalho (str): The area of work where the individual is employed.
         zona_corpo_atingida (str): The body zone affected by the injury.
         tipo_lesao (str): The type of injury sustained.
@@ -34,7 +32,6 @@ def predict_lost_days(idade,funcao,area_trabalho,zona_corpo_atingida,tipo_lesao)
     # Create a DataFrame with the input features
     input_data = pd.DataFrame([{
         'Age': idade,
-        'Function': map_function(funcao),
         'AreaAT': area_trabalho,
         'ZonaCorpoAtingida': zona_corpo_atingida,
         'TipoDeLesao': tipo_lesao

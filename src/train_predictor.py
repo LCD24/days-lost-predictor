@@ -30,36 +30,7 @@ def clean_data(df):
 
     return df
 
-def map_data(df):
-    """
-    Maps values in the 'Function' column of the DataFrame to integer IDs using
-    a mapping fetched from a MySQL database. Removes rows where the mapping fails
-    (i.e., where the 'Function' value doesn't exist in the mapping).
-
-    Args:
-        df (pandas.DataFrame): The DataFrame containing the 'Function' column.
-
-    Returns:
-        pandas.DataFrame: The DataFrame with the 'Function' column mapped to integers.
-    """
-  
-    connection = get_connection()
-
-    # Fetch mapping data from MySQL
-    query = "SELECT funcao, id_funcao FROM funcao"
-    function_mapping = {}
-    with connection.cursor() as cursor:
-        cursor.execute(query)
-        for row in cursor.fetchall():
-            function_mapping[row['funcao']] = row['id_funcao']
-
-    # Map values in Function column to integers
-    df['Function'] = df['Function'].map(function_mapping)
-
-    # Drop rows where Function couldn't be mapped (i.e., where Function is NaN)
-    df.dropna(subset=['Function'], inplace=True)
-
-    return df  
+ 
     
 def find_best_model(X, y, test_size=0.4,random_state=20):
     """
@@ -161,7 +132,6 @@ def train_model():
     data =  pd.read_csv(DATASET_FILENAME)
 
     data = clean_data(data)
-    data = map_data(data)
 
     X= data.iloc[:,:-1]
     Y= data.iloc[:,-1]

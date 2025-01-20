@@ -28,7 +28,7 @@
       "post": {
         "tags": ["Model"],
         "summary": "Predict lost working days due to an accident",
-        "description": "Predict lost working days based on \"idade\", \"funcao\", \"area_trabalho\", \"zona_corpo_atingida\" and \"tipo_lesao\"",
+        "description": "Predict lost working days based on \"idade\", \"area_trabalho\", \"zona_corpo_atingida\" and \"tipo_lesao\"",
         "operationId": "predictLostDays",
         "consumes": ["application/json"],
         "produces": ["application/json"],

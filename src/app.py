@@ -57,17 +57,16 @@ def predict_lost_days():
     
     # Extract data
     idade = data.get('idade')
-    funcao = data.get('funcao')
     area_trabalho = data.get('area_trabalho')
     zona_corpo_atingida = data.get('zona_corpo_atingida')
     tipo_lesao = data.get('tipo_lesao')
     
     # Check if all data was sent
-    if (not idade or not funcao or not area_trabalho or not zona_corpo_atingida or not tipo_lesao):
-        return jsonify({'message': "You should include 'idade', 'funcao', 'area_trabalho', 'zona_corpo_atingida' and 'tipo_lesao' in your body"}), 400
+    if (not idade or  not area_trabalho or not zona_corpo_atingida or not tipo_lesao):
+        return jsonify({'message': "You should include 'idade',  'area_trabalho', 'zona_corpo_atingida' and 'tipo_lesao' in your body"}), 400
     
     try:
-        result = predict(idade,funcao,area_trabalho,zona_corpo_atingida,tipo_lesao)
+        result = predict(idade,area_trabalho,zona_corpo_atingida,tipo_lesao)
     except FileNotFoundError:
         return jsonify({'message': "An error occured while loading the model"}), 500
     except Exception as e:
@@ -93,18 +92,6 @@ def add_function():
     Add a new function to be mapped .
     """
     data = request.json
-    
-    # Extract data
-    funcao = data.get('funcao')
-    
-    if funcao is None:
-        return jsonify({'error':  "You must pass an 'function' parameter in request"}), 400
-        
-    # Add mapping
-    try:
-        add_function_mapping(funcao)
-    except pymysql.Error:
-        return jsonify({'error':  "An error occured while adding the function"}), 500
     
     return '', 204
     
