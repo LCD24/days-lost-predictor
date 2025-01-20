@@ -47,6 +47,9 @@ This feature is essential to train the model correctly, as it ensures that the p
     cd ../..
     pip install -r requirements.txt
     ```
+    ```
+    pip install oracledb
+    ```
 
 6. Run the app:
 
