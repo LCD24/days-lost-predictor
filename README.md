@@ -54,6 +54,7 @@ This feature is essential to train the model correctly, as it ensures that the p
 6. Run the app:
 
     ```
+    cd src
     py app.py
     ```
 

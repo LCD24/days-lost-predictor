@@ -59,6 +59,10 @@ def fetch_data(url, selected_columns, index_column):
         return df
     else:
         print(f"Error accessing {url}: {response.status_code}")
+        print("URL final:", url)
+        print(OUTSYSTEM_USER +" "+OUTSYSTEM_PASSWORD)
+
+
 
 
 def get_data():
@@ -75,7 +79,7 @@ def get_data():
     Returns:
         pd.DataFrame: The combined DataFrame after processing.
     """
-    selected_columns = ['Id','BirthDate', 'Occupation']
+    selected_columns = ['Id','BirthDate']
     df = fetch_data(colaborators_api_url, selected_columns, "Id")
     df = generate_age_column(df)
 
@@ -84,7 +88,7 @@ def get_data():
 
     if df is not None:
         df = df.join(accidents_df)
-        df.rename(columns={'Occupation': 'Function'}, inplace=True)
+        
         
         # Create directory structure up to the file path
         directory = os.path.dirname(OUTSYSTEM_DATA_FILENAME)

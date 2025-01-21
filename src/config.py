@@ -14,6 +14,6 @@ ORACLE_SERVICE_NAME = 'ORCLPDB1'
 ORACLE_USER = 'HR_DEV'
 ORACLE_PASSWORD = 'EVIDEN$2024'
 
-OUTSYSTEM_USER="atosoutsystems1@gmail.com"
-OUTSYSTEM_PASSWORD="atosoutsystems@123"
-OUTSYSTEM_BASE_URL="https://personal-dnyz6odv.outsystemscloud.com/Swift_Dev1_CS/rest/HeathSafetyAPIAreas"
+OUTSYSTEM_USER="predictiveModel@gmail.com"
+OUTSYSTEM_PASSWORD="Eviden2024@"
+OUTSYSTEM_BASE_URL="https://evidenusainc-dev.outsystemscloud.com/HealthSafety_CS/rest/HeathSafetyAPIAreas/"
