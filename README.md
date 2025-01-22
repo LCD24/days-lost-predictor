@@ -12,7 +12,7 @@ This feature is essential to train the model correctly, as it ensures that the p
 1. Clone the repository to your local machine:
 
     ```
-    git clone https://github.com/LCD24/days-lost-predictor
+    git clone -branch JoseChanges https://github.com/LCD24/days-lost-predictor
     ```
 
 2. Navigate to the project directory:
@@ -25,7 +25,7 @@ This feature is essential to train the model correctly, as it ensures that the p
 
     ```
     # For Windows
-    python -m venv venv
+    python -m venv venv // py -m venv venv
 
     # For Unix/Mac
     python3 -m venv venv
@@ -43,11 +43,9 @@ This feature is essential to train the model correctly, as it ensures that the p
 
 5. Install dependencies:
 
-    ```
-    cd ../..
     pip install -r requirements.txt
     ```
-    ```
+   
     pip install oracledb
     ```
 
