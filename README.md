@@ -12,7 +12,7 @@ This feature is essential to train the model correctly, as it ensures that the p
 1. Clone the repository to your local machine:
 
     ```
-    git clone -branch JoseChanges https://github.com/LCD24/days-lost-predictor
+    git clone -branch Dev https://github.com/LCD24/days-lost-predictor
     ```
 
 2. Navigate to the project directory:
