@@ -14,7 +14,7 @@ This feature is essential to train the model correctly, as it ensures that the p
     ```
     git clone -branch DEV https://github.com/LCD24/days-lost-predictor
 
-    This is a test
+    
     ```
 
 2. Navigate to the project directory:
